@@ -2,16 +2,14 @@ package Cadastros;
 
 public class Viagem {
 
-	private int horaInicio;
+	private int getHoraInicio;
 	private int minutosInicio;
-	private int horaTermino;
+	private int getHoraTermino;
 	private int minutosTermino;
-	private int duracaoHoras;
-	private int duracaoMinutos;
 	private int duracaoTotalMinutos;
 
 	private Viagem(int hora, int minutos) {
-		this.horaInicio = hora;
+		this.getHoraInicio = hora;
 		this.minutosInicio = minutos;
 	}
 
@@ -21,7 +19,7 @@ public class Viagem {
 	}
 
 	public int getHoraInicio() {
-		return horaInicio;
+		return getHoraInicio;
 	}
 
 	public int getMinutoInicio() {
@@ -29,12 +27,12 @@ public class Viagem {
 	}
 
 	public void encerrarViagem(int horaTermino, int minutosTermino) {
-		this.horaTermino = horaTermino;
+		this.getHoraTermino = horaTermino;
 		this.minutosTermino = minutosTermino;
 	}
 
 	public int getHoraTermino() {
-		return horaTermino;
+		return getHoraTermino;
 	}
 
 	public int getMinutosTermino() {
@@ -42,40 +40,12 @@ public class Viagem {
 	}
 
 	public int getDuracaoHoras() {
-		if (horaTermino == horaInicio)
-			duracaoHoras = 0;
-		if (horaTermino > horaInicio) //varias possibilidades... 
-			if (horaTermino == horaInicio + 1) {  
-				if (minutosTermino < minutosInicio)  //nao chegou a uma hora
-					duracaoHoras = 0;
-				else //durou pelo menos uma hora
-					duracaoHoras = 1;
-			} else { //possivelmente ultrapassou duas horas
-				if (horaTermino - horaInicio > 2) //
-					duracaoHoras = horaTermino - horaInicio;
-				else if (horaTermino - horaInicio == 2 &&   //certamente menos de duas horas  
-						 minutosTermino < minutosInicio)    //e mais de uma hora
-					duracaoHoras = 1;
-				else //duracao de duas horas, certamente
-					duracaoHoras = 2;
-					
-			}
-		if (horaTermino < horaInicio) 
-			duracaoHoras = -1; //para casos em que a hora de termino nao foi registrada
-		return duracaoHoras;
+		return new Duracao_Horas(this).calcular();
 	}
-
 	public int getDuracaoMinutos() {
-		if (minutosTermino > minutosInicio) 
-			duracaoMinutos = minutosTermino - minutosInicio;
-		else {
-			duracaoMinutos = 60 - minutosInicio + minutosTermino;
-			if (duracaoMinutos == 60) //caso especial
-				duracaoMinutos = 0;
-		}
-		return duracaoMinutos;
+		return new Duracao_Minutos(this).calcular();
 	}
-
+	
 	public int getDuracaoTotalMinutos() {
 		duracaoTotalMinutos = getDuracaoHoras() * 60 + getDuracaoMinutos();
 		return duracaoTotalMinutos;
